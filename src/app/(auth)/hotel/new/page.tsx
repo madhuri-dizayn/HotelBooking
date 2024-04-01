@@ -10,3 +10,5 @@ const Hotel = () => {
 };
 
 export default Hotel;
+
+//madhu
