@@ -24,7 +24,7 @@ const HotelDetail = () => {
     async function fetchData() {
       const data = await fetchHotelById(hotelId);
       if (data?.success) {
-        setHotelDetail(data.data);
+        setHotelDetail(data.data as HotelDetail);
       }
     }
     fetchData();

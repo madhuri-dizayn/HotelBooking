@@ -31,6 +31,16 @@ import { addHotel } from "@/actions";
 import { Toast } from "../ui/toast";
 import { useRouter } from "next/navigation";
 
+interface FormData {
+  title: string;
+  description: string;
+  image: string;
+  country: string;
+  city: string;
+  LocationDes: string;
+  // Add more fields as needed
+}
+
 const uploader = Uploader({
   apiKey: "free", // Get production API keys from Bytescale
 });
@@ -42,7 +52,8 @@ const handleImageDelete = (image: string) => {
 };
 
 const AddHotelForm = () => {
-  const [image, setImage] = useState();
+  const [image, setImage] = useState<string | undefined>();
+
   const [imageDeleting, setImageDeleting] = useState(false);
   const [states, setStates] = useState([]);
   const [city, setCity] = useState([]);
@@ -64,37 +75,58 @@ const AddHotelForm = () => {
 
   // console.log(form, "Form");
 
-  async function onSubmit(data) {
+  // async function onSubmit(data: FormData) {
+  //   if (
+  //     !data.title ||
+  //     !data.description ||
+  //     !data.image ||
+  //     !data.country ||
+  //     !data.city ||
+  //     !data.LocationDes
+  //   ) {
+  //     alert("Please fill in all required fields.");
+  //     return;
+  //   }
+
+  //   const hotelres = await addHotel(data);
+  //   if (hotelres?.success) {
+  //     alert("Hotel added successfully");
+  //     Router.push("/");
+  //   } else {
+  //     alert("Hotel not added");
+  //   }
+  // }
+
+  async function onSubmit(data: any) {
+    const formData: FormData = {
+      title: data.title,
+      description: data.description,
+      image: data.image,
+      country: data.country,
+      city: data.city,
+      LocationDes: data.LocationDes,
+    };
+
     if (
-      !data.title ||
-      !data.description ||
-      !data.image ||
-      !data.country ||
-      !data.city ||
-      !data.LocationDes
+      !formData.title ||
+      !formData.description ||
+      !formData.image ||
+      !formData.country ||
+      !formData.city ||
+      !formData.LocationDes
     ) {
       alert("Please fill in all required fields.");
       return;
     }
 
-    const hotelres = await addHotel(data);
-    if (hotelres.success) {
+    const hotelres = await addHotel(formData);
+    if (hotelres?.success) {
       alert("Hotel added successfully");
       Router.push("/");
     } else {
       alert("Hotel not added");
     }
   }
-
-  // useEffect(() => {
-  //   if (typeof image === "string") {
-  //     form.setValue("image", image, {
-  //       shouldValidate: true,
-  //       shouldDirty: true,
-  //       shouldTouch: true,
-  //     });
-  //   }
-  // }, []);
 
   return (
     <Form {...form}>
